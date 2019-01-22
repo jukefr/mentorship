@@ -12,7 +12,7 @@ const getBaseUrl = () => `https://${window.location.host}`
 const getOptions = (container) => {
   return {
     responseType: 'token id_token',
-    redirectUri: `${getBaseUrl()}/auth/signed-in`,
+    redirectUri: `${getBaseUrl()}/auth/signed-in/`,
     scope: 'openid profile email'
   }
 }

@@ -2,17 +2,23 @@ import { Handler, Context, Callback } from "aws-lambda";
 import { DynamoDB } from "aws-sdk";
 import jwt from "jsonwebtoken";
 import middy from "middy";
-import {
-  cors,
-  urlEncodeBodyParser,
-  jsonBodyParser,
-  httpErrorHandler
-} from "middy/middlewares";
+import { urlEncodeBodyParser, jsonBodyParser } from "middy/middlewares";
 
 const AUTH0_CLIENT_ID = process.env.AUTH0_CLIENT_ID || "";
 const AUTH0_CLIENT_PUBLIC_KEY = process.env.AUTH0_CLIENT_PUBLIC_KEY || "";
 const USERS_TABLE = process.env.USERS_TABLE || "";
 const dynamoDB = new DynamoDB.DocumentClient();
+
+// CORS
+const corsMiddleware = () => {
+  return ({
+    after: (handler:any, next:any) => {
+      handler.event.headers['Access-Control-Allow-Origin'] = "*"
+      handler.event.headers['Access-Control-Allow-Credentials'] = true
+      next()
+    }
+  })
+ }
 
 // Policy helper function
 const generatePolicy = (principalId: any, effect: any, resource: any) => {
@@ -78,8 +84,7 @@ let auth: Handler = (event, context, callback) => {
 auth = middy(auth)
   .use(jsonBodyParser())
   .use(urlEncodeBodyParser())
-  .use(httpErrorHandler())
-  .use(cors());
+  .use(corsMiddleware())
 
 let list: Handler = async event => {
   const { userId } = event.body;
@@ -101,8 +106,7 @@ let list: Handler = async event => {
 list = middy(list)
   .use(jsonBodyParser())
   .use(urlEncodeBodyParser())
-  .use(httpErrorHandler())
-  .use(cors());
+  .use(corsMiddleware())
 
 let post: Handler = async event => {
   const { userId, name } = JSON.parse(event.body);
@@ -130,7 +134,6 @@ let post: Handler = async event => {
 post = middy(post)
   .use(jsonBodyParser())
   .use(urlEncodeBodyParser())
-  .use(httpErrorHandler())
-  .use(cors());
+  .use(corsMiddleware())
 
 export { auth, post, list };

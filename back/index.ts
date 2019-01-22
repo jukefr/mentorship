@@ -81,7 +81,7 @@ auth = middy(auth)
   .use(httpErrorHandler())
   .use(cors());
 
-let list: Handler = async (event, _, cb) => {
+let list: Handler = async event => {
   const { userId } = event.body;
 
   if (typeof userId !== "string") {
@@ -95,8 +95,8 @@ let list: Handler = async (event, _, cb) => {
     }
   };
 
-  await dynamoDB.get(params);
-  return cb(null, "works");
+  const result = await dynamoDB.get(params);
+  return { result };
 };
 list = middy(list)
   .use(jsonBodyParser())
@@ -104,7 +104,7 @@ list = middy(list)
   .use(httpErrorHandler())
   .use(cors());
 
-let post: Handler = async (event, _, callback) => {
+let post: Handler = async event => {
   const { userId, name } = JSON.parse(event.body);
 
   if (typeof userId !== "string") {
@@ -122,10 +122,10 @@ let post: Handler = async (event, _, callback) => {
   };
 
   await dynamoDB.put(params);
-  return callback(null, {
+  return {
     userId: userId,
     name: name
-  });
+  };
 };
 post = middy(post)
   .use(jsonBodyParser())

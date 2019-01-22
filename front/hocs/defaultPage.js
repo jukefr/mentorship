@@ -44,6 +44,13 @@ export default Page => class DefaultPage extends React.Component {
 
   componentDidMount() {
     window.addEventListener('storage', this.logout, false)
+    const loggedUser = getUserFromLocalCookie()
+    const pageProps = Page.getInitialProps
+    this.props = {
+      ...pageProps,
+      loggedUser,
+      isAuthenticated: !!loggedUser
+    }
   }
 
   componentWillUnmount() {

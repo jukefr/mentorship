@@ -81,10 +81,6 @@ let auth: Handler = (event, context, callback) => {
     return callback("Unauthorized");
   }
 };
-auth = middy(auth)
-  .use(jsonBodyParser())
-  .use(urlEncodeBodyParser())
-  .use(corsMiddleware())
 
 let list: Handler = async event => {
   const { userId } = event.body;
@@ -104,7 +100,6 @@ let list: Handler = async event => {
   return { result };
 };
 list = middy(list)
-  .use(jsonBodyParser())
   .use(urlEncodeBodyParser())
   .use(corsMiddleware())
 
@@ -133,7 +128,6 @@ let post: Handler = async event => {
 };
 post = middy(post)
   .use(jsonBodyParser())
-  .use(urlEncodeBodyParser())
   .use(corsMiddleware())
 
 export { auth, post, list };

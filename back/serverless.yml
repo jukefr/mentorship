@@ -21,8 +21,8 @@ provider:
         - { "Fn::GetAtt": ["UsersDynamoDBTable", "Arn"] }
   environment:
     USERS_TABLE: ${self:custom.tableName}
-    AUTH0_CLIENT_ID: ${file(./secrets.json):AUTH0_CLIENT_ID}
-    AUTH0_CLIENT_PUBLIC_KEY: ${file(./public_key.pem)}
+    AUTH0_CLIENT_ID: ${env:AUTH0_CLIENT_ID}
+    AUTH0_CLIENT_PUBLIC_KEY: ${env:AUTH0_CLIENT_PUBLIC_KEY}
 
 functions:
   auth:

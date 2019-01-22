@@ -18,9 +18,8 @@
   },
   "scripts": {
     "dev": "next",
-    "build": "next build",
-    "start": "next start",
-    "lint": "standard --fix"
+    "build": "next build && next export",
+    "start": "next start"
   },
   "standard": {
     "parser": "babel-eslint"

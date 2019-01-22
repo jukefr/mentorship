@@ -26,6 +26,7 @@ action "Build" {
   uses = "jukefr/actions/node@master"
   needs = ["Add Secrets"]
   args  = ["cd back && npm i && npm run deploy"]
+  secrets = ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY"]
 }
 
 workflow "Front Publish" {

@@ -18,7 +18,7 @@ export default class SignedIn extends React.Component {
       }
 
       setToken(result.idToken, result.accessToken);
-      Router.push('/mentorship')
+      Router.push('/')
     })
   }
   render () {

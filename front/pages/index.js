@@ -1,7 +1,7 @@
 import React from "react";
 import Cookie from "js-cookie";
 import PropTypes from "prop-types";
-import {Link} from "next";
+import Link from "next/link";
 import fetch from "isomorphic-fetch";
 import styled from "styled-components";
 

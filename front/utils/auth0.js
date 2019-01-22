@@ -7,7 +7,7 @@ const getAuth0 = (options) => {
   });
 }
 
-const getBaseUrl = () => `${window.location.protocol}//${window.location.host}`
+const getBaseUrl = () => `${window.location.protocol}//${window.location.host}/mentorship/`
 
 const getOptions = (container) => {
   return {

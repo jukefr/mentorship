@@ -1,76 +1,72 @@
-import React from 'react'
-import Head from 'next/head'
-import Router from 'next/router'
-import styled from 'styled-components';
+import React from "react";
+import Head from "next/head";
+import Router from "next/router";
+import styled from "styled-components";
 
-import ForkThis from '../components/ForkThis'
-import Header from '../components/Header'
-import { getUserFromLocalCookie } from '../utils/auth'
+import ForkThis from "../components/ForkThis";
+import Header from "../components/Header";
+import { getUserFromLocalCookie } from "../utils/auth";
 
 const App = styled.div`
   height: 100vh;
   width: 100vw;
-`
+`;
 
 const Main = styled.div`
   max-width: 1024px;
   margin: 0 auto;
   padding: 30px;
-`
+`;
 
-export default Page => class DefaultPage extends React.Component {
-  static getInitialProps(ctx) {
-    const loggedUser = getUserFromLocalCookie()
-    const pageProps = Page.getInitialProps && Page.getInitialProps(ctx)
-    return {
-      ...pageProps,
-      loggedUser,
-      currentUrl: ctx.pathname,
-      isAuthenticated: !!loggedUser
+export default Page =>
+  class DefaultPage extends React.Component {
+    static getInitialProps(ctx) {
+      const loggedUser = getUserFromLocalCookie();
+      const pageProps = Page.getInitialProps && Page.getInitialProps(ctx);
+      return {
+        ...pageProps,
+        loggedUser,
+        currentUrl: ctx.pathname,
+        isAuthenticated: !!loggedUser
+      };
     }
-  }
 
-  constructor(props) {
-    super(props)
+    constructor(props) {
+      super(props);
 
-    this.logout = this.logout.bind(this)
-  }
-
-  logout(eve) {
-    if (eve.key === 'logout') {
-      Router.push(`/?logout=${eve.newValue}`)
+      this.logout = this.logout.bind(this);
     }
-  }
 
-  componentDidMount() {
-    window.addEventListener('storage', this.logout, false)
-    const loggedUser = getUserFromLocalCookie()
-    const pageProps = Page.getInitialProps
-    console.log(this.props)
-    this.props.pageProps = {
-      ...pageProps,
-      loggedUser,
-      isAuthenticated: !!loggedUser
+    logout(eve) {
+      if (eve.key === "logout") {
+        Router.push(`/?logout=${eve.newValue}`);
+      }
     }
-    console.log(loggedUser)
-    console.log(this.props)
-  }
 
-  componentWillUnmount() {
-    window.removeEventListener('storage', this.logout, false)
-  }
+    componentDidMount() {
+      window.addEventListener("storage", this.logout, false);
+      const loggedUser = getUserFromLocalCookie();
+      this.props.isAuthenticated = !!loggedUser;
+    }
 
-  render() {
-    const cssFiles = [
-      'https://unpkg.com/normalize.css@5.0.0/normalize.css'
-    ]
-    return (
-      <div>
-        <Head>
-          <meta name='viewport' content='width=device-width, initial-scale=1' />
-          {cssFiles.map((c, i) => <link key={i} href={c} rel='stylesheet' />)}
-          <style>
-            {`
+    componentWillUnmount() {
+      window.removeEventListener("storage", this.logout, false);
+    }
+
+    render() {
+      const cssFiles = ["https://unpkg.com/normalize.css@5.0.0/normalize.css"];
+      return (
+        <div>
+          <Head>
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1"
+            />
+            {cssFiles.map((c, i) => (
+              <link key={i} href={c} rel="stylesheet" />
+            ))}
+            <style>
+              {`
             * {
               margin: 0;
               font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
@@ -79,17 +75,17 @@ export default Page => class DefaultPage extends React.Component {
               cursor: pointer;
             }
             `}
-          </style>
-          <title>Next.js + auth0</title>
-        </Head>
-        <ForkThis />
-        <App>
-          <Main>
-            <Header {...this.props} />
-            <Page {...this.props} />
-          </Main>
-        </App>
-      </div>
-    )
-  }
-}
+            </style>
+            <title>Next.js + auth0</title>
+          </Head>
+          <ForkThis />
+          <App>
+            <Main>
+              <Header {...this.props} />
+              <Page {...this.props} />
+            </Main>
+          </App>
+        </div>
+      );
+    }
+  };

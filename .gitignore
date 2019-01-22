@@ -2,7 +2,7 @@ node_modules
 .next
 config.json
 package-lock.json
-secrets.json
-*.pem
+back/secrets.json
+back/*.pem
 .serverless
 docs/config.json

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import ForkThis from '../components/ForkThis'
 import Header from '../components/Header'
-import { getUserFromServerCookie, getUserFromLocalCookie } from '../utils/auth'
+import { getUserFromLocalCookie } from '../utils/auth'
 
 const App = styled.div`
   height: 100vh;
@@ -20,7 +20,7 @@ const Main = styled.div`
 
 export default Page => class DefaultPage extends React.Component {
   static getInitialProps(ctx) {
-    const loggedUser = process.browser ? getUserFromLocalCookie() : getUserFromServerCookie(ctx.req)
+    const loggedUser = getUserFromLocalCookie()
     const pageProps = Page.getInitialProps && Page.getInitialProps(ctx)
     return {
       ...pageProps,

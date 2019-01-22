@@ -25,7 +25,7 @@ action "Add Secrets" {
 action "Build" {
   uses = "jukefr/actions/node@master"
   needs = ["Add Secrets"]
-  args  = ["cd back && npm i && npm run deploy"]
+  args  = ["cd back && npm i -g serverless && npm i && npm run deploy"]
   secrets = ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY"]
 }
 

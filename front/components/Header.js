@@ -47,6 +47,7 @@ const Header = ({ isAuthenticated, currentUrl }) => (
         </HeaderLink>
       </Link>
     ))}
+    {isAuthenticated}
   </AppHeader>
 )
 

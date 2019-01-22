@@ -7,7 +7,7 @@ const getAuth0 = (options) => {
   });
 }
 
-const getBaseUrl = () => `https://${window.location.host}`
+const getBaseUrl = () => `${window.location.protocol}//${window.location.host}`
 
 const getOptions = (container) => {
   return {

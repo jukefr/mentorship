@@ -1,4 +1,5 @@
 import { Handler, Context, Callback } from "aws-lambda";
+import { inspect } from "util";
 import { DynamoDB } from "aws-sdk";
 import jwt from "jsonwebtoken";
 
@@ -9,7 +10,8 @@ const dynamoDB = new DynamoDB.DocumentClient();
 
 const cors = {
   "Access-Control-Allow-Credentials": true,
-  "Access-Control-Allow-Origin": "*"
+  "Access-Control-Allow-Origin": "*",
+  "Content-Type": "application/json"
 };
 
 // Policy helper function
@@ -75,10 +77,14 @@ const auth: Handler = (event, context, callback) => {
 };
 
 const list: Handler = async event => {
-  const { userId } = event.body;
+  const { userId } = event.queryStringParameters;
 
   if (typeof userId !== "string") {
-    return {body: "userId must be of type string", statusCode: 500, headers: cors}
+    return {
+      body: "userId must be of type string",
+      statusCode: 500,
+      headers: cors
+    };
   }
 
   const params = {
@@ -88,17 +94,25 @@ const list: Handler = async event => {
     }
   };
 
-  const result = await dynamoDB.get(params);
-  return { body: result, statusCode: 200, headers: cors };
+  const result = await dynamoDB.get(params).promise();
+  return { body: inspect(result), statusCode: 200, headers: cors };
 };
 
 const post: Handler = async event => {
   const { userId, name } = JSON.parse(event.body);
 
   if (typeof userId !== "string") {
-    return {body: "userId must be of type string", statusCode: 500, headers: cors}
+    return {
+      body: "userId must be of type string",
+      statusCode: 500,
+      headers: cors
+    };
   } else if (typeof name !== "string") {
-    return {body: "name must be of type string", statusCode: 500, headers: cors}
+    return {
+      body: "name must be of type string",
+      statusCode: 500,
+      headers: cors
+    };
   }
 
   const params = {
@@ -109,14 +123,11 @@ const post: Handler = async event => {
     }
   };
 
-  await dynamoDB.put(params);
+  const result = await dynamoDB.put(params).promise();
   return {
     statusCode: 200,
     headers: cors,
-    body: {
-      userId: userId,
-      name: name
-    }
+    body: inspect(result)
   };
 };
 

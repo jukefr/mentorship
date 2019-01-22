@@ -10,7 +10,7 @@ action "isMaster" {
 
 action "Add Public Key" {
   uses = "actions/bin/sh@master"
-  args = ["echo \"$PUBLIC_KEY_PEM\" >> back/public_key.pem"]
+  args = ["echo $PUBLIC_KEY_PEM >> back/public_key.pem"]
   needs = ["isMaster"]
   secrets = ["PUBLIC_KEY_PEM"]
 }

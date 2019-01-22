@@ -2,7 +2,12 @@ import { Handler, Context, Callback } from "aws-lambda";
 import { DynamoDB } from "aws-sdk";
 import jwt from "jsonwebtoken";
 import middy from "middy";
-import { cors, urlEncodeBodyParser, jsonBodyParser, httpErrorHandler } from "middy/middlewares";
+import {
+  cors,
+  urlEncodeBodyParser,
+  jsonBodyParser,
+  httpErrorHandler
+} from "middy/middlewares";
 
 const AUTH0_CLIENT_ID = process.env.AUTH0_CLIENT_ID || "";
 const AUTH0_CLIENT_PUBLIC_KEY = process.env.AUTH0_CLIENT_PUBLIC_KEY || "";
@@ -73,7 +78,7 @@ let auth: Handler = (event, context, callback) => {
 auth = middy(auth)
   .use(jsonBodyParser())
   .use(urlEncodeBodyParser())
-  .use(httpErrorHandler());
+  .use(httpErrorHandler())
   .use(cors());
 
 let list: Handler = async (event, _, cb) => {

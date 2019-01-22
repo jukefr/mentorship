@@ -10,14 +10,14 @@ action "isMaster" {
 
 action "Add Public Key" {
   uses = "actions/bin/sh@master"
-  args = ["echo $PUBLIC_KEY_PEM >> back/public_key.pem"]
+  args = ["echo -e \"$PUBLIC_KEY_PEM\" >> back/public_key.pem"]
   needs = ["isMaster"]
   secrets = ["PUBLIC_KEY_PEM"]
 }
 
 action "Add Secrets" {
   uses = "actions/bin/sh@master"
-  args = ["echo $BACK_SECRETS >> back/secrets.json"]
+  args = ["echo -e \"$BACK_SECRETS\" >> back/secrets.json"]
   needs = ["Add Public Key"]
   secrets = ["BACK_SECRETS"]
 }
@@ -67,7 +67,7 @@ action "Add Config" {
   uses = "actions/bin/sh@master"
   needs = ["Clean Public (gh-pages)"]
   secrets = ["FRONT_SECRETS"]
-  args = ["echo $FRONT_SECRETS >> front/config.json"]
+  args = ["echo -e \"$FRONT_SECRETS\" >> front/config.json"]
 }
 
 action "Build2" {

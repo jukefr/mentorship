@@ -1,0 +1,27 @@
+{
+  "name": "mentorship",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.391.0",
+    "jsonwebtoken": "^8.4.0",
+    "middy": "^0.20.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.17",
+    "@types/jsonwebtoken": "^8.3.0",
+    "@types/node": "^10.12.18",
+    "@types/serverless": "^1.18.0",
+    "serverless-offline": "^4.1.4",
+    "serverless-plugin-include-dependencies": "^3.2.1",
+    "serverless-plugin-typescript": "^1.1.5",
+    "typescript": "^3.2.4"
+  }
+}

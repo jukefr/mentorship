@@ -1,0 +1,97 @@
+service: mentorship
+
+custom:
+  tableName: 'users-${self:provider.stage}'
+
+provider: 
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  region: eu-west-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - { "Fn::GetAtt": ["UsersDynamoDBTable", "Arn"] }
+  environment:
+    USERS_TABLE: ${self:custom.tableName}
+    AUTH0_CLIENT_ID: ${file(./secrets.json):AUTH0_CLIENT_ID}
+    AUTH0_CLIENT_PUBLIC_KEY: ${file(./public_key.pem)}
+
+functions:
+  auth:
+    handler: index.auth
+    cors: true
+  list:
+    handler: index.list
+    events:
+      - http: 
+          path: list
+          method: get
+          cors: true
+  post:
+    handler: index.post
+    events:
+      - http:
+          path: post
+          method: post
+          # private endpoint test
+          authorizer: auth
+          cors: true
+
+resources:
+  Resources:
+    # This response is needed for custom authorizer failures cors support ¯\_(ツ)_/¯
+    GatewayResponse:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: EXPIRED_TOKEN
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+        StatusCode: '401'
+    AuthFailureGatewayResponse:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: UNAUTHORIZED
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+        StatusCode: '401'
+    UsersDynamoDBTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: userId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.tableName}
+
+
+plugins: 
+  - serverless-plugin-typescript
+  - serverless-offline
+  - serverless-plugin-include-dependencies
+
+package:
+  exclude:
+    - docs/**/*
+  include:
+    index.ts

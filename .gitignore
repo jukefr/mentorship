@@ -1,0 +1,8 @@
+node_modules
+.next
+config.json
+package-lock.json
+secrets.json
+*.pem
+.serverless
+docs/config.json

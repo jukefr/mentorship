@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Link} from 'next-prefixed'
+import {Link} from 'next'
 import styled from 'styled-components'
 
 const AppHeader = styled.div`

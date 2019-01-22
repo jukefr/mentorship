@@ -68,9 +68,15 @@ action "Add .nojekyll" {
   args = ["echo nextjs >> front/out/.nojekyll"]
 }
 
+action "Add CNAME" {
+  uses = "actions/bin/sh@master"
+  needs = ["Add .nojekyll"]
+  args = ["echo trymentorship.com >> front/out/CNAME"]
+}
+
 action "Git Add" {
   uses = "jukefr/actions/git@master"
-  needs = ["Add .nojekyll"]
+  needs = ["Add CNAME"]
   args = ["-C front/out add --all"]
 } 
 

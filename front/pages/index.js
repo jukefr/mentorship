@@ -68,8 +68,6 @@ const Index = ({ isAuthenticated }) => (
         {createLink("https://github.com/zeit/next.js", "next.js")} and{" "}
         {createLink("https://auth0.com/", "Auth0")} together.
       </Content>
-      <button onClick={getPublic}>LIST</button>
-      <button onClick={getPrivate}>POST</button>
       {!isAuthenticated && (
         <Content>
           You're not authenticated yet. Maybe you want to{" "}

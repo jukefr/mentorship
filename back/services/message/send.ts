@@ -1,5 +1,5 @@
 import { inspect } from "util";
-import {uuidv1} from "uuid"
+import {v1 as uuid} from "uuid"
 import { DynamoDB } from "aws-sdk";
 import Ajv from "ajv";
 
@@ -30,7 +30,7 @@ export const send = async (event: any) => {
     TableName: MESSAGES_TABLE,
     Item: {
       ...JSON.parse(event.body),
-      id: uuidv1()
+      id: uuid()
     }
   };
 

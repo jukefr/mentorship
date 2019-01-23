@@ -22,7 +22,7 @@ export default class SignedIn extends React.Component {
       setToken(result.idToken, result.accessToken);
       const token = Cookie.getJSON("idToken");
       fetch(
-        "https://7il6ru8up2.execute-api.eu-west-1.amazonaws.com/dev/user/create",
+        "https://wbdekxswll.execute-api.eu-west-1.amazonaws.com/dev/user/create",
         {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },

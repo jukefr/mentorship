@@ -51,7 +51,7 @@ const ContentLink = styled.a`
 `;
 
 const SuperSecretDiv = () => (
-  <SecretContent>This is a super secret div.</SecretContent>
+  <SecretContent>This is a super very secret div.</SecretContent>
 );
 
 const createLink = (href, text) => (
@@ -62,7 +62,7 @@ const Index = ({ isAuthenticated }) => (
   <div>
     {isAuthenticated && <SuperSecretDiv />}
     <Main>
-      <Heading>Hello, friend!</Heading>
+      <Heading>Henlo, fren!</Heading>
       <Content>
         This is a super simple example of how to use{" "}
         {createLink("https://github.com/zeit/next.js", "next.js")} and{" "}

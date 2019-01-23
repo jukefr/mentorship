@@ -1,3 +1,8 @@
 {
-  "alias": ["trymentorship.com"]
+    "version": 2,
+    "name": "trymentorship",
+    "alias": "trymentorship.com",
+    "builds": [
+        { "src": "next.config.js", "use": "@now/next" }
+    ]
 }

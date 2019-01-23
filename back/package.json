@@ -12,13 +12,15 @@
   "dependencies": {
     "ajv": "^6.7.0",
     "aws-sdk": "^2.391.0",
-    "jsonwebtoken": "^8.4.0"
+    "jsonwebtoken": "^8.4.0",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.17",
     "@types/jsonwebtoken": "^8.3.0",
     "@types/node": "^10.12.18",
     "@types/serverless": "^1.18.0",
+    "@types/uuid": "^3.4.4",
     "serverless-offline": "^4.1.4",
     "serverless-plugin-include-dependencies": "^3.2.1",
     "serverless-plugin-typescript": "^1.1.5",

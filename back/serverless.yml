@@ -46,6 +46,14 @@ functions:
           method: post
           authorizer: auth
           cors: true
+  sendMessage:
+    handler: services/message/send.send
+    events:
+      - http:
+          path: message/send
+          method: post
+          authorizer: auth
+          cors: true
 
 resources:
   Resources:

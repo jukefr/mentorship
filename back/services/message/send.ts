@@ -1,4 +1,5 @@
 import { inspect } from "util";
+import {uuidv1} from "uuid"
 import { DynamoDB } from "aws-sdk";
 import Ajv from "ajv";
 
@@ -14,7 +15,7 @@ const cors = {
   "Content-Type": "application/json"
 };
 
-export const create = async (event: any) => {
+export const send = async (event: any) => {
   const test = ajv.compile(Message);
   const isValid = test(JSON.parse(event.body));
 
@@ -27,7 +28,10 @@ export const create = async (event: any) => {
 
   const params = {
     TableName: MESSAGES_TABLE,
-    Item: JSON.parse(event.body)
+    Item: {
+      ...JSON.parse(event.body),
+      id: uuidv1()
+    }
   };
 
   const result = await dynamoDB.put(params).promise();

@@ -73,11 +73,11 @@ resources:
       Properties:
         AttributeDefinitions:
           -
-            AttributeName: userId
+            AttributeName: sub
             AttributeType: S
         KeySchema:
           -
-            AttributeName: userId
+            AttributeName: sub
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1

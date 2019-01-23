@@ -26,17 +26,17 @@ provider:
 
 functions:
   auth:
-    handler: index.auth
+    handler: services/auth.auth
     cors: true
   getUser:
-    handler: index.getUser
+    handler: services/user/get.get
     events:
       - http: 
           path: user/get
           method: get
           cors: true
   createUser:
-    handler: index.createUser
+    handler: services/user/create.create
     events:
       - http:
           path: user/create

@@ -1,12 +1,16 @@
 import { Handler, Context, Callback } from "aws-lambda";
 import { inspect } from "util";
 import { DynamoDB } from "aws-sdk";
+import Ajv from "ajv";
 import jwt from "jsonwebtoken";
+
+import User from "./models/User";
 
 const AUTH0_CLIENT_ID = process.env.AUTH0_CLIENT_ID || "";
 const AUTH0_CLIENT_PUBLIC_KEY = process.env.AUTH0_CLIENT_PUBLIC_KEY || "";
 const USERS_TABLE = process.env.USERS_TABLE || "";
 const dynamoDB = new DynamoDB.DocumentClient();
+const ajv = new Ajv({ allErrors: true });
 
 const cors = {
   "Access-Control-Allow-Credentials": true,
@@ -99,21 +103,17 @@ const list: Handler = async event => {
 };
 
 const post: Handler = async event => {
-  const { userId, name } = JSON.parse(event.body);
+  const test = ajv.compile(User);
+  const isValid = test(JSON.parse(event.body));
 
-  if (typeof userId !== "string") {
+  if (!isValid)
     return {
-      body: "userId must be of type string",
+      body: inspect(test.errors),
       statusCode: 500,
       headers: cors
     };
-  } else if (typeof name !== "string") {
-    return {
-      body: "name must be of type string",
-      statusCode: 500,
-      headers: cors
-    };
-  }
+
+  const { userId, name } = JSON.parse(event.body);
 
   const params = {
     TableName: USERS_TABLE,

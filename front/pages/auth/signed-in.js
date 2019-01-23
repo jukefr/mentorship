@@ -21,6 +21,7 @@ export default class SignedIn extends React.Component {
       }
 
       setToken(result.idToken, result.accessToken);
+      Router.push("/");
       const token = Cookie.getJSON("idToken");
       const user = getUserFromLocalCookie();
       fetch(
@@ -32,10 +33,11 @@ export default class SignedIn extends React.Component {
             sub: `${user.sub}`,
             name: `${user.name}`,
             email: `${user.email}`,
-            nickname: `${user.nickname}`
+            nickname: `${user.nickname}`,
+            picture: `${user.picture}`
           })
         }
-      ).then(() => Router.push("/"));
+      );
     });
   }
   render() {

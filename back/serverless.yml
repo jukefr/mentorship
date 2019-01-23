@@ -112,7 +112,6 @@ resources:
 plugins: 
   - serverless-plugin-typescript
   - serverless-offline
-  - serverless-plugin-include-dependencies
 
 package:
   exclude:

@@ -28,18 +28,18 @@ functions:
   auth:
     handler: index.auth
     cors: true
-  list:
-    handler: index.list
+  getUser:
+    handler: index.getUser
     events:
       - http: 
-          path: list
+          path: user/get
           method: get
           cors: true
-  post:
-    handler: index.post
+  createUser:
+    handler: index.createUser
     events:
       - http:
-          path: post
+          path: user/create
           method: post
           # private endpoint test
           authorizer: auth

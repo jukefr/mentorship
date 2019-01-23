@@ -2,7 +2,6 @@ import React from "react";
 import Cookie from "js-cookie";
 import PropTypes from "prop-types";
 import Link from "next/link";
-import fetch from "isomorphic-fetch";
 import styled from "styled-components";
 
 import defaultPage from "../hocs/defaultPage";
@@ -58,21 +57,6 @@ const SuperSecretDiv = () => (
 const createLink = (href, text) => (
   <ContentLink href={href}>{text}</ContentLink>
 );
-
-const getPublic = () => {
-  fetch(
-    "https://7il6ru8up2.execute-api.eu-west-1.amazonaws.com/dev/list?userId=snowflake"
-  ).then(res => console.log(res));
-};
-
-const getPrivate = () => {
-  const token = Cookie.getJSON('idToken');
-  fetch("https://7il6ru8up2.execute-api.eu-west-1.amazonaws.com/dev/post", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${token}` },
-    body: JSON.stringify({ userId: "4awfw56", name: "deawfawfcorationwap" })
-  }).then(res => console.log(res));
-};
 
 const Index = ({ isAuthenticated }) => (
   <div>

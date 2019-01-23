@@ -44,8 +44,8 @@ export default Page =>
 
     componentDidMount() {
       window.addEventListener("storage", this.logout, false);
-      const loggedUser = getUserFromLocalCookie();
-      if (loggedUser && !this.props.isAuthenticated) Router.push(window.location.pathname);
+      //const loggedUser = getUserFromLocalCookie();
+      //if (loggedUser && !this.props.isAuthenticated) Router.push(window.location.pathname);
     }
 
     componentWillUnmount() {

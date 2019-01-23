@@ -5,6 +5,7 @@ import Link from "next/link";
 import styled from "styled-components";
 
 import defaultPage from "../hocs/defaultPage";
+import { getUserFromLocalCookie } from "../utils/auth";
 
 const SecretContent = styled.div`
   background-color: #ecf0f1;
@@ -58,37 +59,73 @@ const createLink = (href, text) => (
   <ContentLink href={href}>{text}</ContentLink>
 );
 
-const Index = ({ isAuthenticated }) => (
-  <div>
-    {isAuthenticated && <SuperSecretDiv />}
-    <Main>
-      <Heading>Henlo, fren!</Heading>
-      <Content>
-        This is a super simple example of how to use{" "}
-        {createLink("https://github.com/zeit/next.js", "next.js")} and{" "}
-        {createLink("https://auth0.com/", "Auth0")} together.
-      </Content>
-      {!isAuthenticated && (
-        <Content>
-          You're not authenticated yet. Maybe you want to{" "}
-          <Link href="/auth/sign-in">
-            {createLink("/auth/sign-in", "sign in")}
-          </Link>{" "}
-          and see what happens?
-        </Content>
-      )}
-      {isAuthenticated && (
-        <Content>
-          Now that you're authenticated, maybe you should try going to our{" "}
-          <Link href="/secret">
-            {createLink("/secret", "super secret page")}
-          </Link>
-          !
-        </Content>
-      )}
-    </Main>
-  </div>
-);
+class Index extends React.Component {
+  static getInitialProps(ctx) {
+    const loggedUser = getUserFromLocalCookie();
+    return {
+      loggedUser,
+      currentUrl: ctx.pathname,
+      isAuthenticated: !!loggedUser
+    };
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.logout = this.logout.bind(this);
+  }
+
+  logout(eve) {
+    if (eve.key === "logout") {
+      Router.push(`/?logout=${eve.newValue}`);
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener("storage", this.logout, false);
+    //const loggedUser = getUserFromLocalCookie();
+    //if (loggedUser && !this.props.isAuthenticated) Router.push(window.location.pathname);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("storage", this.logout, false);
+  }
+
+  render() {
+    const cssFiles = ["https://unpkg.com/normalize.css@5.0.0/normalize.css"];
+    return (
+      <div>
+        {this.props.isAuthenticated && <SuperSecretDiv />}
+        <Main>
+          <Heading>Henlo, fren!</Heading>
+          <Content>
+            This is a super simple example of how to use{" "}
+            {createLink("https://github.com/zeit/next.js", "next.js")} and{" "}
+            {createLink("https://auth0.com/", "Auth0")} together.
+          </Content>
+          {!this.props.isAuthenticated && (
+            <Content>
+              You're not authenticated yet. Maybe you want to{" "}
+              <Link href="/auth/sign-in">
+                {createLink("/auth/sign-in", "sign in")}
+              </Link>{" "}
+              and see what happens?
+            </Content>
+          )}
+          {this.props.isAuthenticated && (
+            <Content>
+              Now that you're authenticated, maybe you should try going to our{" "}
+              <Link href="/secret">
+                {createLink("/secret", "super secret page")}
+              </Link>
+              !
+            </Content>
+          )}
+        </Main>
+      </div>
+    );
+  }
+}
 
 Index.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired

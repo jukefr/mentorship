@@ -3,6 +3,8 @@ node_modules
 config.json
 package-lock.json
 back/secrets.json
+back/.build/
+.DS_Store
 back/*.pem
 .serverless
 docs/config.json

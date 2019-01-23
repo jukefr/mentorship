@@ -1,6 +1,12 @@
 export = {
   type: "object",
   additionalProperties: false,
-  required: ["hello"],
-  items: { hello: { type: "string" } }
+  required: ["sub"],
+  items: {
+    name: { type: "string" },
+    nickname: { type: "string" },
+    email: { type: "string" },
+    picture: { type: "string" },
+    sub: { type: "string" }
+  }
 };

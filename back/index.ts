@@ -80,29 +80,27 @@ const auth: Handler = (event, context, callback) => {
   }
 };
 
-const list: Handler = async event => {
-  const { userId } = event.queryStringParameters;
+const getUser: Handler = async event => {
+  const test = ajv.compile(User);
+  const isValid = test(event.queryStringParameters);
 
-  if (typeof userId !== "string") {
+  if (!isValid)
     return {
-      body: "userId must be of type string",
+      body: inspect(test.errors),
       statusCode: 500,
       headers: cors
     };
-  }
 
   const params = {
     TableName: USERS_TABLE,
-    Key: {
-      userId
-    }
+    Key: event.queryStringParameters
   };
 
   const result = await dynamoDB.get(params).promise();
   return { body: inspect(result), statusCode: 200, headers: cors };
 };
 
-const post: Handler = async event => {
+const createUser: Handler = async event => {
   const test = ajv.compile(User);
   const isValid = test(JSON.parse(event.body));
 
@@ -113,14 +111,9 @@ const post: Handler = async event => {
       headers: cors
     };
 
-  const { userId, name } = JSON.parse(event.body);
-
   const params = {
     TableName: USERS_TABLE,
-    Item: {
-      userId,
-      name
-    }
+    Item: JSON.parse(event.body)
   };
 
   const result = await dynamoDB.put(params).promise();
@@ -131,4 +124,4 @@ const post: Handler = async event => {
   };
 };
 
-export { auth, post, list };
+export { auth, createUser, getUser };

@@ -15,7 +15,7 @@ const cors = {
 };
 export const get = async (event: any) => {
   const test = ajv.compile(User);
-  const isValid = test(JSON.parse(event.body));
+  const isValid = test(JSON.parse(event.queryString));
 
   if (!isValid)
     return {
@@ -26,10 +26,10 @@ export const get = async (event: any) => {
 
   const params = {
     TableName: USERS_TABLE,
-    Item: JSON.parse(event.body)
+    Key: JSON.parse(event.queryString)
   };
 
-  const result = await dynamoDB.put(params).promise();
+  const result = await dynamoDB.get(params).promise();
   return {
     statusCode: 200,
     headers: cors,

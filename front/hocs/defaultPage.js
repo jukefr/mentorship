@@ -3,7 +3,6 @@ import Head from "next/head";
 import Router from "next/router";
 import styled from "styled-components";
 
-import ForkThis from "../components/ForkThis";
 import Header from "../components/Header";
 import { getUserFromLocalCookie } from "../utils/auth";
 
@@ -76,9 +75,8 @@ export default Page =>
             }
             `}
             </style>
-            <title>Next.js + auth0</title>
+            <title>Try Mentorship - Find A Mentor !</title>
           </Head>
-          <ForkThis />
           <App>
             <Main>
               <Header {...this.props} />

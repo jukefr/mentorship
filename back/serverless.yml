@@ -1,7 +1,8 @@
 service: mentorship
 
 custom:
-  tableName: 'users-${self:provider.stage}'
+  usersTable: 'users-${self:provider.stage}'
+  messagesTable: 'messages-${self:provider.stage}'
 
 provider: 
   name: aws
@@ -19,8 +20,10 @@ provider:
         - dynamodb:DeleteItem
       Resource:
         - { "Fn::GetAtt": ["UsersDynamoDBTable", "Arn"] }
+        - { "Fn::GetAtt": ["MessagesDynamoDBTable", "Arn"] }
   environment:
-    USERS_TABLE: ${self:custom.tableName}
+    USERS_TABLE: ${self:custom.usersTable}
+    MESSAGES_TABLE: ${self:custom.messagesTable}
     AUTH0_CLIENT_ID: ${env:AUTH0_CLIENT_ID}
     AUTH0_CLIENT_PUBLIC_KEY: ${env:AUTH0_CLIENT_PUBLIC_KEY}
 
@@ -41,7 +44,6 @@ functions:
       - http:
           path: user/create
           method: post
-          # private endpoint test
           authorizer: auth
           cors: true
 
@@ -82,8 +84,22 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        TableName: ${self:custom.tableName}
-
+        TableName: ${self:custom.usersTable}
+    MessagesDynamoDBTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.messagesTable}
 
 plugins: 
   - serverless-plugin-typescript

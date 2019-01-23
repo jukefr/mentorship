@@ -27,7 +27,7 @@ action "isMaster2" {
 action "Now" {
   uses = "jukefr/actions/node@master"
   needs = ["isMaster2"]
-  args  = ["cd front && npm i -g now && now --token=$ZEIT_TOKEN && now --token=$ZEIT_TOKEN alias"]
+  args  = ["cd front && npm i -g now --unsafe-perm && npm i && now --token=$ZEIT_TOKEN && now --token=$ZEIT_TOKEN alias"]
   secrets = ["ZEIT_TOKEN"]
 }
 

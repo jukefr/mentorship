@@ -1,6 +1,5 @@
 export = {
   type: "object",
-  additionalProperties: false,
   required: ["sub"],
   items: {
     name: { type: "string" },

@@ -15,7 +15,7 @@ const cors = {
 };
 export const get = async (event: any) => {
   const test = ajv.compile(User);
-  const isValid = test(JSON.parse(event.queryString));
+  const isValid = test(JSON.parse(event.queryStringParameters));
 
   if (!isValid)
     return {
@@ -26,7 +26,7 @@ export const get = async (event: any) => {
 
   const params = {
     TableName: USERS_TABLE,
-    Key: JSON.parse(event.queryString)
+    Key: JSON.parse(event.queryStringParameters)
   };
 
   const result = await dynamoDB.get(params).promise();

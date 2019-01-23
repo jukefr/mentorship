@@ -4,7 +4,7 @@ import Router from "next/router";
 import fetch from "isomorphic-fetch";
 import Cookie from "js-cookie";
 import { getUserFromLocalCookie } from "../../utils/auth";
-
+import config from "../../config.json"
 import { setToken } from "../../utils/auth";
 import { parseHash } from "../../utils/auth0";
 
@@ -25,7 +25,7 @@ export default class SignedIn extends React.Component {
       const token = Cookie.getJSON("idToken");
       const user = getUserFromLocalCookie();
       fetch(
-        "https://wbdekxswll.execute-api.eu-west-1.amazonaws.com/dev/user/create",
+        `https://${config.SERVERLESS_ID}.execute-api.eu-west-1.amazonaws.com/dev/user/create`,
         {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },

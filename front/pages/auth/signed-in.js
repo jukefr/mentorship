@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Router from "next/router";
 import fetch from "isomorphic-fetch";
 import Cookie from "js-cookie";
-import { getUserFromLocalCookie } from "../utils/auth";
+import { getUserFromLocalCookie } from "../../utils/auth";
 
 import { setToken } from "../../utils/auth";
 import { parseHash } from "../../utils/auth0";
